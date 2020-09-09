@@ -42,7 +42,7 @@ File should look like this:
 
 255.255.255.252 corresponds to a /30 netmask.
 
-* 1) First step (change file to look like shown below)
+1. First step (change file to look like shown below)
 
  	`sudo vim /etc/network/interfaces`
 
