@@ -8,19 +8,19 @@ Initiation project to system and network administration.
 
 ### V.1 VM Part
 
-I used VirtualBox to install Debian 10.5.0 amd64 netinst.
+For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netinst.
 
 * Following properties:
 
-Disk size of 8 GB
-Has a 4.2 GB partition
+	* Disk size of 8 GB
+	* Has a 4.2 GB partition
 
  * Software installed:
 
-web server
-print server
-SSH server
-standard system utilities
+	* web server
+	* print server
+	* SSH server
+	* standard system utilities
 
 * Command to disk space and partion:
 
