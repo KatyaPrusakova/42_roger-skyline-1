@@ -1,8 +1,10 @@
 <h1 align="center">
-42_roger-skyline-1
+Roger-skyline-1
 </h1>
-Initiation project to system and network administration.
 ---
+<h1 align="center">
+Initiation project to system and network administration.
+</h1>
 ## Installation
 
 Downloading and installing steps:
