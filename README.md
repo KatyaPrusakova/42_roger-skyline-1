@@ -24,7 +24,7 @@ For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netin
 
 * Command to disk space and partion:
 
-`df -h`
+	`df -h`
 
 **Command to add new user**
 
@@ -111,8 +111,25 @@ the key has been added so now its possible to log in
 	ssh new_eprusako@10.11.200.233 -p 2222
 
 
-# FIREWALL (iptable) better run on derbian if run
+# FIREWALL
 
+	echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+	echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+
+	sudo apt-get -y install iptables-persistent
+
+You can verify these fields by installing debconf-utils and searching for iptables values:
+
+	sudo apt install debconf-utils
+
+	sudo debconf-get-selections | grep iptables
+
+
+
+# Port scanning
+
+after running scan.py
+	sudo vim /etc/hosts.deny
 
 
 ### VI.1 Web Part
