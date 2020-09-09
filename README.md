@@ -9,14 +9,14 @@ Initiation project to system and network administration.
 
 ##### Downloading and installing steps:
 
-* [Download](https://github.com/KatyaPrusakova/42_roger-skyline-1/archive/master.zip)the latest version of the config.
+* [Download] (https://github.com/KatyaPrusakova/42_roger-skyline-1/archive/master.zip)the latest version of the config.
 
 Command to check space and partion
 
 `df -H`
 `su -`
 
-Command to add new user
+**Command to add new user**
 
 `sudo adduser new_eprusako`
 `sudo usermod -aG sudo new_eprusako`
@@ -29,24 +29,25 @@ Command to add new user
 File should look like this:
 
 	# User priviliege
-	new_eprusako ALL=(ALL:ALL) ALL
+	sudo			ALL=(ALL:ALL)		ALL
+	new_eprusako ALL=(ALL:ALL)			ALL
 
 	# Allow members of group sudo to execute any command
-	%sudo   ALL=(ALL:ALL)   ALL
-	new_eprusako ALL=(ALL:ALL)   NOPASSWD:ALL
+	%sudo			ALL=(ALL:ALL)		ALL
+	new_eprusako	ALL=(ALL:ALL)		NOPASSWD:ALL
 
 
-Command to check static IP
- 255.255.255.252 corresponds to a /30 netmask.
+ **Command to check static IP**
+255.255.255.252 corresponds to a /30 netmask.
 
-	# 1) First step (change file to look like shown below)
+	* 1) First step (change file to look like shown below)
 
  		`sudo vim /etc/network/interfaces`
 ##################################################################################
 		 The primary network interface
 		 auto enp0s3
 ##################################################################################
-	# 2) Second step (create file to look like shown below)
+	* 2) Second step (create file to look like shown below)
 
 		`sudo touch /etc/network/interfaces.d/enp0s3`
 		`sudo vim /etc/network/interfaces.d/enp0s3`
@@ -58,9 +59,9 @@ Command to check static IP
 ##################################################################################
 		`sudo systemctl restart networking` or `sudo service networking restart`
 
-# Setting up the SSH connection
-# Comand to check status: sudo systemctl status ssh
-	# 0) Open
+**Setting up the SSH connection**
+Comand to check status: `sudo systemctl status ssh`
+	* *0) Open
 
 		`sudo vim /etc/ssh/sshd_config`
 
