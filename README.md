@@ -5,17 +5,26 @@ Roger-skyline-1
 Initiation project to system and network administration.
 </h1>
 
-## Installation
 
-##### Downloading and installing steps:
+### V.1 VM Part
 
-* [Download](https://github.com/KatyaPrusakova/42_roger-skyline-1/archive/master.zip)the latest version of the config.
+I used VirtualBox to install Debian 10.5.0 amd64 netinst.
 
-Command to check space and partion
+* Following properties:
 
-`df -H`
+Disk size of 8 GB
+Has a 4.2 GB partition
 
-`su -`
+ * Software installed:
+
+web server
+print server
+SSH server
+standard system utilities
+
+* Command to disk space and partion:
+
+`df -h`
 
 **Command to add new user**
 
@@ -103,3 +112,20 @@ the key has been added so now its possible to log in
 
 
 # FIREWALL (iptable) better run on derbian if run
+
+
+
+### VI.1 Web Part
+
+Create a Self-Signed SSL Certificate using Apache in Debian
+
+
+
+### VI.2 Deployment Part
+
+## Deployment installation
+
+##### Downloading and installing steps:
+
+* [Download](https://github.com/KatyaPrusakova/42_roger-skyline-1/archive/master.zip) the latest version of the config.
+* Run command in terminal `bash deployment_script.sh` in order
