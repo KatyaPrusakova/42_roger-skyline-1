@@ -124,6 +124,38 @@ You can verify these fields by installing debconf-utils and searching for iptabl
 
 	sudo debconf-get-selections | grep iptables
 
+	sudo ufw enable
+
+	sudo ufw allow 2222
+	sudo ufw allow 80/tcp
+	sudo ufw allow 443/tcp
+	sudo service ufw restart
+	sudo ufw status numbered
+	#HTTP on port 80, which is what unencrypted web servers use, using sudo ufw allow http or sudo ufw allow 80
+	#HTTPS on port 443, which is what encrypted web servers use, using sudo ufw allow https or sudo ufw allow 443
+
+##
+
+	sudo systemctl status fail2ban.service
+
+	# 1) Change file
+
+		sudo vim /etc/fail2ban/jail.d/jail-debian.local
+##################################################################################
+		[sshd]
+		port = ssh
+		logpath = %(sshd_log)s
+		backend = %(sshd_backend)s
+		enabled = true
+		filter  = sshd
+		action  = iptables
+		maxretry = 3
+		findtime = 1d
+		bantime = 2w
+##################################################################################
+	# 2) Restart
+
+		sudo service fail2ban restart
 
 
 # Port scanning
@@ -131,11 +163,112 @@ You can verify these fields by installing debconf-utils and searching for iptabl
 after running scan.py
 	sudo vim /etc/hosts.deny
 
+	# 1) Change file
+
+		sudo vim /etc/default/portsentry
+##################################################################################
+		 TCP_MODE="atcp"
+		 UDP_MODE="audp"
+##################################################################################
+	# 2) Change file
+		sudo vim /etc/portsentry/portsentry.conf
+##################################################################################
+		# only one KILL shall be uncommented
+		BLOCK_UDP="1"
+		BLOCK_TCP="1"
+		KILL_ROUTE="/sbin/iptables -I INPUT -s $TARGET$ -j DROP"
+##################################################################################
+	# 3) Check and restart
+		sudo cat /etc/portsentry/portsentry.conf | grep KILL_ROUTE | grep -v "#"
+		sudo /etc/init.d/portsentry start
+		# in order to check: sudo cat /var/log/syslog
+
+# Stop the services you don’t need for this project.
+	# Check running services
+	sudo ls /etc/init.d
+	# or sudo service --status-all
+
+	sudo systemctl disable console-setup.service
+	sudo systemctl disable keyboard-setup.service
+	sudo systemctl disable bluetooth.service
+	sudo systemctl disable syslog.service
+
+	# sudo systemctl disable keyboard-setup.sh depending on donwloaded version
+
+
 
 ### VI.1 Web Part
 
 Create a Self-Signed SSL Certificate using Apache in Debian
 
+#Copy
+sudo chmod 777 /var/www/html/index.html
+scp -P 2222 index.html  new_eprusako@10.11.200.233:/var/www/html/index.html
+
+#RUN COMMAND
+sudo openssl req -x509 -nodes -days 365 -subj "/C=FI/ST=Helsinki/L=Helsinki/O=Global Security/OU=IT Department/CN=10.11.200.233/emailAddress=root@roger.lan" -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+
+#CREATE FILE
+
+sudo vim /etc/apache2/conf-available/ssl-params.conf
+
+##################################################################################
+SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+SSLProtocol All -SSLv2 -SSLv3
+SSLHonorCipherOrder On
+
+Header always set X-Frame-Options DENY
+Header always set X-Content-Type-Options nosniff
+
+SSLCompression off
+SSLSessionTickets Off
+SSLUseStapling on
+SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
+##################################################################################
+
+
+#MAKE BACKUP
+sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf_backup
+
+#EDIT FILE
+sudo vim /etc/apache2/sites-available/default-ssl.conf
+
+##################################################################################
+		ServerAdmin root@roger
+		ServerName 10.11.200.233
+		DocumentRoot /var/www/html
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+		SSLEngine on
+		SSLCertificateFile	#uncomment
+		SSLCertificateKeyFile #uncomment
+##################################################################################
+
+#EDITFILE
+sudo vim /etc/apache2/apache2.conf
+
+##################################################################################
+ServerName 10.11.200.233
+##################################################################################
+
+#CHECK AND RESTART
+sudo apache2ctl configtest
+sudo service apache2 restart
+
+#ADD REDIRECT
+
+sudo vim /etc/apache2/sites-available/000-default.conf
+
+##################################################################################
+Redirect "/" "https://10.11.200.233/"
+##################################################################################
+
+sudo a2enmod ssl
+sudo a2enmod headers
+sudo a2ensite default-ssl
+sudo a2enconf ssl-params
+sudo apache2ctl configtest
+sudo systemctl reload apache2
 
 
 ### VI.2 Deployment Part
