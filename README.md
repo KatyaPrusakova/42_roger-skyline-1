@@ -21,20 +21,23 @@ Command to add new user
 `sudo adduser new_eprusako`
 `sudo usermod -aG sudo new_eprusako`
 
-# **Change user rights**
+ **Change user rights**
 
 	`vim /etc/sudoers`
 	`chmod 755 /etc/sudoers`
-##################################################################################
+
+File should look like this:
+
 	# User priviliege
 	new_eprusako ALL=(ALL:ALL) ALL
+
 	# Allow members of group sudo to execute any command
 	%sudo   ALL=(ALL:ALL)   ALL
 	new_eprusako ALL=(ALL:ALL)   NOPASSWD:ALL
-##################################################################################
 
-# Command to check static IP
-# 255.255.255.252 corresponds to a /30 netmask.
+
+Command to check static IP
+ 255.255.255.252 corresponds to a /30 netmask.
 
 	# 1) First step (change file to look like shown below)
 
