@@ -9,14 +9,14 @@ Initiation project to system and network administration.
 
 ##### Downloading and installing steps:
 
-* **[Download](https://github.com/KatyaPrusakova/42_roger-skyline-1/archive/master.zip)**the latest version of the config.
+* [Download](https://github.com/KatyaPrusakova/42_roger-skyline-1/archive/master.zip)the latest version of the config.
 
-# Command to check space and partion
+Command to check space and partion
 
 `df -H`
+`su -`
 
-# su -
-# Command to add new user
+Command to add new user
 
 `sudo adduser new_eprusako`
 `sudo usermod -aG sudo new_eprusako`
