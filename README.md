@@ -93,8 +93,8 @@ Comand to check status: `sudo systemctl status ssh`
 
 3. Run on host computer
 
-ssh-keygen -t ed25519 -C "My key for Debian"`
-ssh-copy-id -i $HOME/.ssh/id_ed25519.pub new_eprusako@10.11.200.233 -p 2222
+	ssh-keygen -t ed25519 -C "My key for Debian"
+	ssh-copy-id -i $HOME/.ssh/id_ed25519.pub new_eprusako@10.11.200.233 -p 2222
 
 The key has been added to VM so now its possible to log in.
 
