@@ -238,7 +238,7 @@ Disable command:
 
 4. Check mail as root to see changes.
 
-––––
+---
 
 <h1 align="center">
 VI.1 Web Part
