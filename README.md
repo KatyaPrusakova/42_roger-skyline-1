@@ -5,8 +5,9 @@ Roger-skyline-1
 Initiation project to system and network administration.
 </h1>
 
-
+<h1 align="center">
 ### V.1 VM Part
+</h1>
 
 For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netinst.
 
@@ -55,14 +56,12 @@ File `sudoers` should look like this:
 
 	sudo vim /etc/network/interfaces
 
-		 The primary network interface
-		 auto enp0s3
+		The primary network interface
+		auto enp0s3
 
-2. File `enp0s3` should look like this:
+2. Create file `enp0s3` with command `sudo vim /etc/network/interfaces.d/enp0s3`.
 
-	`sudo touch /etc/network/interfaces.d/enp0s3`
-
-	`sudo vim /etc/network/interfaces.d/enp0s3`
+3. File `enp0s3` should look like this:
 
 		iface enp0s3 inet static
 			address 10.11.200.233
@@ -71,7 +70,7 @@ File `sudoers` should look like this:
 
 255.255.255.252 corresponds to a /30 netmask.
 
-3. Run restart
+4. Run restart
 
 `sudo systemctl restart networking` or `sudo service networking restart`
 
@@ -120,7 +119,7 @@ The key has been added to VM so now its possible to log in.
 If you try to connect with different user it should show `Permission denied (publickey).` error. To see more details connect with `ssh -v`
 
 
-# FIREWALL
+**FIREWALL**
 
 	echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 	echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
