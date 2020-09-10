@@ -5,13 +5,9 @@ Roger-skyline-1
 Initiation project to system and network administration.
 </h1>
 
----
-
 <h1 align="center">
 V.1 VM Part
 </h1>
-
----
 
 For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netinst.
 
@@ -77,7 +73,11 @@ File `sudoers` should look like this:
 
 `sudo systemctl restart networking` or `sudo service networking restart`
 
+---
+
 **Setting up the SSH connection**
+
+---
 
 Comand to check status: `sudo systemctl status ssh`
 
@@ -121,7 +121,11 @@ The key has been added to VM so now its possible to log in.
 
 If you try to connect with different user it should show `Permission denied (publickey).` error. To see more details connect with `ssh -v`
 
-**FIREWALL AND DOS PROTECTION**
+---
+
+**FIREWALL and DOS protection**
+
+---
 
 	echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 	echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
@@ -174,7 +178,11 @@ If you want to delete run `sudo apt-get autoremove --purge fail2ban`
 
 If you want to check ssh banned informtion run `journalctl -u ssh.service` and to checl all log info run  `ls -l /var/log/*.log`
 
+---
+
 **Port scanning**
+
+---
 
 If you want to test you port scanning run `scan.py` file from this repository. All hosts that have been benned are saved in the file `sudo vim /etc/hosts.deny`
 
@@ -201,7 +209,11 @@ If you want to test you port scanning run `scan.py` file from this repository. A
 		sudo /etc/init.d/portsentry start
 		# in order to check: sudo cat /var/log/syslog
 
+---
+
 **Stop the services you don’t need for this project.**
+
+---
 
 Check running services:
 
@@ -213,7 +225,11 @@ Disable command:
 	sudo systemctl disable keyboard-setup.service
 	sudo systemctl disable bluetooth.service
 
+---
+
 **Cron scripts**
+
+---
 
 1. Add script:
 
@@ -240,26 +256,23 @@ Disable command:
 
 4. Check mail as root to see changes.
 
----
 
 <h1 align="center">
 VI.1 Web Part
 </h1>
 
----
-
 Create a Self-Signed SSL Certificate using Apache in Debian.
 
-**COPY**
+**Copy**
 
 	sudo chmod 777 /var/www/html/index.html
 	scp -P 2222 index.html  new_eprusako@10.11.200.233:/var/www/html/index.html
 
-**RUN COMMAND**
+**Run command**
 
 	sudo openssl req -x509 -nodes -days 365 -subj "/C=FI/ST=Helsinki/L=Helsinki/O=Global Security/OU=IT Department/CN=10.11.200.233/emailAddress=root@roger.lan" -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
 
-**CREATE FILE**
+**Create file**
 
 	sudo vim /etc/apache2/conf-available/ssl-params.conf
 
@@ -276,11 +289,11 @@ Create a Self-Signed SSL Certificate using Apache in Debian.
 		SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 
 
-**MAKE BACKUP**
+**Make backup**
 
 	sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf_backup
 
-**EDIT FILE**
+**Edit file**
 
 	sudo vim /etc/apache2/sites-available/default-ssl.conf
 
@@ -293,18 +306,18 @@ Create a Self-Signed SSL Certificate using Apache in Debian.
 		SSLCertificateFile	#uncomment
 		SSLCertificateKeyFile #uncomment
 
-**EDIT FILE**
+**Edit file**
 
 	sudo vim /etc/apache2/apache2.conf
 
 		ServerName 10.11.200.233
 
-**CHECK AND RESTART**
+**Check and restart**
 
 	sudo apache2ctl configtest
 	sudo service apache2 restart
 
-**ADD REDIRECT**
+**Ad redirect**
 
 	sudo vim /etc/apache2/sites-available/000-default.conf
 
@@ -318,13 +331,11 @@ Redirect "/" "https://10.11.200.233/"
 	sudo apache2ctl configtest
 	sudo systemctl reload apache2
 
----
 
 <h1 align="center">
 VI.2 Deployment Part
 </h1>
 
----
 
 **Deployment installation**
 
