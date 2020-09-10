@@ -6,7 +6,7 @@ Initiation project to system and network administration.
 </h1>
 
 <h1 align="center">
-### V.1 VM Part
+V.1 VM Part
 </h1>
 
 For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netinst.
@@ -119,7 +119,7 @@ The key has been added to VM so now its possible to log in.
 If you try to connect with different user it should show `Permission denied (publickey).` error. To see more details connect with `ssh -v`
 
 
-**FIREWALL**
+**FIREWALL AND DOS PROTECTION**
 
 	echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 	echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
@@ -139,8 +139,9 @@ You can verify these fields by installing debconf-utils and searching for iptabl
 	sudo ufw allow 443/tcp
 	sudo service ufw restart
 	sudo ufw status numbered
-	#HTTP on port 80, which is what unencrypted web servers use, using sudo ufw allow http or sudo ufw allow 80
-	#HTTPS on port 443, which is what encrypted web servers use, using sudo ufw allow https or sudo ufw allow 443
+
+HTTP on port 80, which is what unencrypted web servers use, using sudo ufw allow http or sudo ufw allow 80
+HTTPS on port 443, which is what encrypted web servers use, using sudo ufw allow https or sudo ufw allow 443
 
 	sudo systemctl status fail2ban.service
 
@@ -162,6 +163,14 @@ You can verify these fields by installing debconf-utils and searching for iptabl
 2. Restart
 
 	sudo service fail2ban restart
+
+If you try to connect via `ssh` with incorrect password, it will resulted IP ban. If you want to unban, run command:
+
+	sudo fail2ban-client set sshd unbanip 10.11.200.233
+
+If you want to delete run `sudo apt-get autoremove --purge fail2ban`
+
+If you want to check ssh banned informtion run `journalctl -u ssh.service` and to checl all log info run  `ls -l /var/log/*.log`
 
 # Port scanning
 
@@ -190,7 +199,7 @@ If you want to test you port scanning run `scan.py` file from this repository. A
 		sudo /etc/init.d/portsentry start
 		# in order to check: sudo cat /var/log/syslog
 
-# Stop the services you don’t need for this project.
+**Stop the services you don’t need for this project.**
 
 	# Check running services
 
@@ -201,25 +210,49 @@ If you want to test you port scanning run `scan.py` file from this repository. A
 	sudo systemctl disable console-setup.service
 	sudo systemctl disable keyboard-setup.service
 	sudo systemctl disable bluetooth.service
-	sudo systemctl disable syslog.service
 
-	# sudo systemctl disable keyboard-setup.sh depending on donwloaded version
+**Cron scripts**
 
+1. Add script:
+		sudo vim /root/scripts/update_script.sh
 
-### VI.1 Web Part
+	#!/bin/bash
+		apt update -y >> /var/log/update_script.log
+		apt upgrade -y >> /var/log/update_script.log
+
+2. Modify crontab `sudo VISUAL=vi crontab -e`
+
+	0 4 * * wed root /root/scripts/update_script.sh
+	@reboot root /root/scripts/update_script.sh
+
+3. Create script to send email if crontab was modified `monitor_cron.sh`
+
+	#!/bin/bash
+	now=`md5sum /etc/crontab`
+	old='/home/katya/cron_tab_status'
+	if [ "$now" != "$old" ]; then
+		echo "Crontab has been modified" | mail -s "Crontab has been modified" root
+	fi
+	md5sum /etc/crontab > /home/katya/cron_tab_status
+
+4. Check mail as root to see changes.
+
+<h1 align="center">
+VI.1 Web Part
+</h1>
 
 Create a Self-Signed SSL Certificate using Apache in Debian.
 
-#Copy
+**Copy**
 
 	sudo chmod 777 /var/www/html/index.html
 	scp -P 2222 index.html  new_eprusako@10.11.200.233:/var/www/html/index.html
 
-#RUN COMMAND
+**RUN COMMAND**
 
 	sudo openssl req -x509 -nodes -days 365 -subj "/C=FI/ST=Helsinki/L=Helsinki/O=Global Security/OU=IT Department/CN=10.11.200.233/emailAddress=root@roger.lan" -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
 
-#CREATE FILE
+**CREATE FILE**
 
 	sudo vim /etc/apache2/conf-available/ssl-params.conf
 
@@ -236,11 +269,11 @@ Create a Self-Signed SSL Certificate using Apache in Debian.
 		SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 
 
-#MAKE BACKUP
+**MAKE BACKUP**
 
 	sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf_backup
 
-#EDIT FILE
+**EDIT FILE**
 
 	sudo vim /etc/apache2/sites-available/default-ssl.conf
 
@@ -253,18 +286,18 @@ Create a Self-Signed SSL Certificate using Apache in Debian.
 		SSLCertificateFile	#uncomment
 		SSLCertificateKeyFile #uncomment
 
-# EDITFILE
+**EDIT FILE**
 
 	sudo vim /etc/apache2/apache2.conf
 
 		ServerName 10.11.200.233
 
-# CHECK AND RESTART
+**CHECK AND RESTART**
 
 	sudo apache2ctl configtest
 	sudo service apache2 restart
 
-# ADD REDIRECT
+**ADD REDIRECT**
 
 	sudo vim /etc/apache2/sites-available/000-default.conf
 
@@ -279,11 +312,15 @@ Redirect "/" "https://10.11.200.233/"
 	sudo systemctl reload apache2
 
 
-### VI.2 Deployment Part
+<h1 align="center">
+VI.2 Deployment Part
+</h1>
 
-## Deployment installation
+**Deployment installation**
 
 ##### Downloading and installing steps:
 
 * [Download](https://github.com/KatyaPrusakova/42_roger-skyline-1/archive/master.zip) the latest version of the config.
-* Run command in terminal `bash deployment_script.sh` in order
+* Run command in terminal `bash deployment_script.sh` in order to deploy.
+
+
