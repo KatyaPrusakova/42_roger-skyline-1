@@ -146,14 +146,14 @@ You can verify these fields by installing debconf-utils and searching for iptabl
 	sudo service ufw restart
 	sudo ufw status numbered
 
-HTTP on port 80, which is what unencrypted web servers use, using sudo ufw allow http or sudo ufw allow 80\
-HTTPS on port 443, which is what encrypted web servers use, using sudo ufw allow https or sudo ufw allow 443
+HTTP on port 80, which is what unencrypted web servers use\
+HTTPS on port 443, which is what encrypted web servers use
 
 	sudo systemctl status fail2ban.service
 
 1. Add file
 
-	sudo vim /etc/fail2ban/jail.d/jail-debian.local
+	`sudo vim /etc/fail2ban/jail.d/jail-debian.local`
 
 		[sshd]
 		port = ssh
@@ -168,14 +168,13 @@ HTTPS on port 443, which is what encrypted web servers use, using sudo ufw allo
 
 2. Restart
 
-	sudo service fail2ban restart
+	`sudo service fail2ban restart`
 
 If you try to connect via `ssh` with incorrect password, it will resulted IP ban. If you want to unban, run command:
 
 	sudo fail2ban-client set sshd unbanip 10.11.200.233
 
-If you want to delete run `sudo apt-get autoremove --purge fail2ban`
-
+If you want to delete run command `sudo apt-get autoremove --purge fail2ban`\
 If you want to check ssh banned informtion run `journalctl -u ssh.service` and to checl all log info run  `ls -l /var/log/*.log`
 
 ---
@@ -188,16 +187,14 @@ If you want to test you port scanning run `scan.py` file from this repository. A
 
 1. Change file
 
-	sudo vim /etc/default/portsentry
+	`sudo vim /etc/default/portsentry`
 
 		TCP_MODE="atcp"
 		UDP_MODE="audp"
 
 2. Change file
 
-	sudo vim /etc/portsentry/portsentry.conf
-
-		# only one KILL shall be uncommented
+	`sudo vim /etc/portsentry/portsentry.conf`
 
 		BLOCK_UDP="1"
 		BLOCK_TCP="1"
@@ -207,7 +204,8 @@ If you want to test you port scanning run `scan.py` file from this repository. A
 
 		sudo cat /etc/portsentry/portsentry.conf | grep KILL_ROUTE | grep -v "#"
 		sudo /etc/init.d/portsentry start
-		# in order to check: sudo cat /var/log/syslog
+
+in order to check: sudo cat /var/log/syslog
 
 ---
 
