@@ -22,14 +22,14 @@ For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netin
 	* SSH server
 	* standard system utilities
 
-* Command to disk space and partion:
+* Command to check disk space and partion:
 
 	`df -h`
 
 **Command to add new user**
 
-	`sudo adduser new_eprusako`
-	`sudo usermod -aG sudo new_eprusako`
+	sudo adduser new_eprusako
+	sudo usermod -aG sudo new_eprusako
 
  **Change user rights**
 
