@@ -51,17 +51,17 @@ File `sudoers` should look like this:
 
  **Command to check static IP**
 
-1. File `interfaces` to look like this:
+1. File `interfaces` should look like this:
 
- 	sudo vim /etc/network/interfaces
+	sudo vim /etc/network/interfaces
 
 		 The primary network interface
 		 auto enp0s3
 
 2. File `enp0s3` should look like this:
 
-	sudo touch /etc/network/interfaces.d/enp0s3
-	sudo vim /etc/network/interfaces.d/enp0s3
+	`sudo touch /etc/network/interfaces.d/enp0s3`
+	`sudo vim /etc/network/interfaces.d/enp0s3`
 
 		iface enp0s3 inet static
 			address 10.11.200.233
