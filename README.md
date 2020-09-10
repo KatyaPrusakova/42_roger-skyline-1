@@ -214,26 +214,27 @@ If you want to test you port scanning run `scan.py` file from this repository. A
 **Cron scripts**
 
 1. Add script:
-		sudo vim /root/scripts/update_script.sh
 
-	#!/bin/bash
+	sudo vim /root/scripts/update_script.sh
+
+		#!/bin/bash
 		apt update -y >> /var/log/update_script.log
 		apt upgrade -y >> /var/log/update_script.log
 
 2. Modify crontab `sudo VISUAL=vi crontab -e`
 
-	0 4 * * wed root /root/scripts/update_script.sh
-	@reboot root /root/scripts/update_script.sh
+		`0 4 * * wed root /root/scripts/update_script.sh`
+		`@reboot root /root/scripts/update_script.sh`
 
 3. Create script to send email if crontab was modified `monitor_cron.sh`
 
-	#!/bin/bash
-	now=`md5sum /etc/crontab`
-	old='/home/katya/cron_tab_status'
-	if [ "$now" != "$old" ]; then
-		echo "Crontab has been modified" | mail -s "Crontab has been modified" root
-	fi
-	md5sum /etc/crontab > /home/katya/cron_tab_status
+		#!/bin/bash
+		now="md5sum /etc/crontab"
+		old="/home/katya/cron_tab_status"
+		if [ "$now" != "$old" ]; then
+			echo "Crontab has been modified" | mail -s "Crontab has been modified" root
+		fi
+		md5sum /etc/crontab > /home/katya/cron_tab_status
 
 4. Check mail as root to see changes.
 
@@ -243,7 +244,7 @@ VI.1 Web Part
 
 Create a Self-Signed SSL Certificate using Apache in Debian.
 
-**Copy**
+**COPY**
 
 	sudo chmod 777 /var/www/html/index.html
 	scp -P 2222 index.html  new_eprusako@10.11.200.233:/var/www/html/index.html
