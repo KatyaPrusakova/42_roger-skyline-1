@@ -100,7 +100,7 @@ The key has been added to VM so now its possible to log in.
 
 4. Open
 
-sudo vim /etc/ssh/sshd_config
+	sudo vim /etc/ssh/sshd_config
 
 5. Change file
 
