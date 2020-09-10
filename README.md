@@ -33,18 +33,18 @@ For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netin
 
  **Change user rights**
 
-	`vim /etc/sudoers`
-	`chmod 755 /etc/sudoers`
+	vim /etc/sudoers
+	chmod 755 /etc/sudoers
 
-File should look like this:
+File `sudoers` should look like this:
 
 	# User priviliege
 	sudo			ALL=(ALL:ALL)		ALL
-	new_eprusako	ALL=(ALL:ALL)		ALL
+	new_eprusako		ALL=(ALL:ALL)		ALL
 
 	# Allow members of group sudo to execute any command
 	%sudo			ALL=(ALL:ALL)		ALL
-	new_eprusako	ALL=(ALL:ALL)		NOPASSWD:ALL
+	new_eprusako		ALL=(ALL:ALL)		NOPASSWD:ALL
 
 
  **Command to check static IP**
