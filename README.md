@@ -93,14 +93,14 @@ Comand to check status: `sudo systemctl status ssh`
 
 3. Run on host computer
 
-	`ssh-keygen -t ed25519 -C "My key for Debian"`
+	`ssh-keygen -t ed25519 -C "My key for Debian"` <br\>
 	`ssh-copy-id -i $HOME/.ssh/id_ed25519.pub new_eprusako@10.11.200.233 -p 2222`
 
 The key has been added to VM so now its possible to log in.
 
 4. Open
 
-	sudo vim /etc/ssh/sshd_config
+	vsudo vim /etc/ssh/sshd_config`
 
 5. Change file
 
@@ -108,22 +108,22 @@ The key has been added to VM so now its possible to log in.
 
 6. Run
 
-	sudo service sshd restart
+	`sudo service sshd restart`
 
 7. To test create new user and try to connect
 
-	sudo adduser new_eprusako
-	sudo adduser new_eprusako sudo
+	`sudo adduser new_eprusako`
+	`sudo adduser new_eprusako sudo`
 
 8. Host computer
 
-	ssh new_eprusako@10.11.200.233 -p 2222
+	`ssh new_eprusako@10.11.200.233 -p 2222`
 
 If you try to connect with different user it should show `Permission denied (publickey).` error. To see more details connect with `ssh -v`
 
 ---
 
-**FIREWALL and DOS protection**
+**Firewall and DOS protection**
 
 ---
 
