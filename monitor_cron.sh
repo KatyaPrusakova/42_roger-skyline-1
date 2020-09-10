@@ -1,6 +1,6 @@
 	#!/bin/bash
 	now = `md5sum /etc/crontab`
-	old = "/home/amamy/cron_tab_status"
+	old = "/home/katya/cron_tab_status"
 
 	if [ "$now" != "$old" ]; then
 		echo "Crontab has been modified" | mail -s "Crontab has been modified" root

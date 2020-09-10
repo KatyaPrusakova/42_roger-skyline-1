@@ -51,7 +51,7 @@
     <body>
 		<div class="container">
 			<h1>Homepage</h1>
-			<form action="action_page.php" method="post" style="max-width:500px;margin:auto">
+			<form  method="post" style="max-width:500px;margin:auto">
 
 				<div id="div_login">
 					<h1>Login</h1>
@@ -63,12 +63,26 @@
 					</div>
 					<div>
 						<input type="submit" value="Submit" name="submit" id="submit" />
-						<input type="submit" value="login" name="login">
+						<input type="submit" value="Login" name="login" onclick="return check(this.form)">
 					</div>
 				</div>
 			</form>
+			<script language="javascript">
+				function check(form)
+				{
+
+				if(form.txt_uname.value == "123" && form.txt_pwd.value == "lalala")
+				{
+					alert("WELCOME ABOARD")
+					return true;
+				}
+				else
+				{
+					alert("The username or password is incorrect")
+					return false;
+				}
+				}
+				</script>
 		</div>
     </body>
 </html>
-
-
