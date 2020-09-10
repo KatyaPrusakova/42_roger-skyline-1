@@ -146,7 +146,7 @@ You can verify these fields by installing debconf-utils and searching for iptabl
 	sudo service ufw restart
 	sudo ufw status numbered
 
-HTTP on port 80, which is what unencrypted web servers use, using sudo ufw allow http or sudo ufw allow 80
+HTTP on port 80, which is what unencrypted web servers use, using sudo ufw allow http or sudo ufw allow 80\
 HTTPS on port 443, which is what encrypted web servers use, using sudo ufw allow https or sudo ufw allow 443
 
 	sudo systemctl status fail2ban.service
