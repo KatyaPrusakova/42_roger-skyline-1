@@ -201,11 +201,11 @@ If you want to test you port scanning run `scan.py` file from this repository. A
 
 **Stop the services you don’t need for this project.**
 
-	# Check running services
+Check running services:
 
-	sudo ls /etc/init.d
+`sudo ls /etc/init.d` or `sudo service --status-all`
 
-	# or sudo service --status-all
+Disable command:
 
 	sudo systemctl disable console-setup.service
 	sudo systemctl disable keyboard-setup.service
@@ -237,6 +237,8 @@ If you want to test you port scanning run `scan.py` file from this repository. A
 		md5sum /etc/crontab > /home/katya/cron_tab_status
 
 4. Check mail as root to see changes.
+
+– – – – -
 
 <h1 align="center">
 VI.1 Web Part
