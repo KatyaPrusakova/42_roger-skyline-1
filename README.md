@@ -28,6 +28,8 @@ For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netin
 
 **Command to add new user**
 
+My new user will be called `new_eprusako`
+
 	sudo adduser new_eprusako
 	sudo usermod -aG sudo new_eprusako
 
@@ -49,28 +51,31 @@ File `sudoers` should look like this:
 
  **Command to check static IP**
 
-255.255.255.252 corresponds to a /30 netmask.
+1. File `interfaces` to look like this:
 
-1. First step (change file to look like shown below)
-
- 	`sudo vim /etc/network/interfaces`
+ 	sudo vim /etc/network/interfaces
 
 		 The primary network interface
 		 auto enp0s3
 
-2. Second step (create file to look like shown below)
+2. File `enp0s3` should look like this:
 
-	`sudo touch /etc/network/interfaces.d/enp0s3`
-	`sudo vim /etc/network/interfaces.d/enp0s3`
+	sudo touch /etc/network/interfaces.d/enp0s3
+	sudo vim /etc/network/interfaces.d/enp0s3
 
 		iface enp0s3 inet static
 			address 10.11.200.233
 			netmask 255.255.255.252
 			gateway 10.11.254.254
 
+255.255.255.252 corresponds to a /30 netmask.
+
+3. Run restart
+
 `sudo systemctl restart networking` or `sudo service networking restart`
 
 **Setting up the SSH connection**
+
 Comand to check status: `sudo systemctl status ssh`
 
 1. Open
@@ -87,28 +92,31 @@ Comand to check status: `sudo systemctl status ssh`
 
 	`ssh-keygen -t ed25519 -C "My key for Debian"`
 	`ssh-copy-id -i $HOME/.ssh/id_ed25519.pub new_eprusako@10.11.200.233 -p 2222`
-the key has been added so now its possible to log in
+
+The key has been added to VM so now its possible to log in.
 
 4. Open
 
 	sudo vim /etc/ssh/sshd_config
 
-5. Change field below
+5. Change file
 
 		PasswordAuthentification no
 
 6. Run
 
-		sudo service sshd restart
+	sudo service sshd restart
 
 7. To test create new user and try to connect
 
-		sudo adduser new_eprusako
-		sudo adduser new_eprusako sudo
+	sudo adduser new_eprusako
+	sudo adduser new_eprusako sudo
 
 8. Host computer
 
 	ssh new_eprusako@10.11.200.233 -p 2222
+
+If you try to connect with different user it should show `Permission denied (publickey).` error. To see more details connect with `ssh -v`
 
 
 # FIREWALL
@@ -134,48 +142,44 @@ You can verify these fields by installing debconf-utils and searching for iptabl
 	#HTTP on port 80, which is what unencrypted web servers use, using sudo ufw allow http or sudo ufw allow 80
 	#HTTPS on port 443, which is what encrypted web servers use, using sudo ufw allow https or sudo ufw allow 443
 
-##
-
 	sudo systemctl status fail2ban.service
 
-1. Change file
+1. Add file
 
 	sudo vim /etc/fail2ban/jail.d/jail-debian.local
 
-	[sshd]
-	port = ssh
-	logpath = %(sshd_log)s
-	backend = %(sshd_backend)s
-	enabled = true
-	filter  = sshd
-	action  = iptables
-	maxretry = 3
-	findtime = 1d
-	bantime = 2w
+		[sshd]
+		port = ssh
+		logpath = %(sshd_log)s
+		backend = %(sshd_backend)s
+		enabled = true
+		filter  = sshd
+		action  = iptables
+		maxretry = 3
+		findtime = 1d
+		bantime = 2w
 
 2. Restart
 
 	sudo service fail2ban restart
 
-
 # Port scanning
 
-after running scan.py
-
-	sudo vim /etc/hosts.deny
+If you want to test you port scanning run `scan.py` file from this repository. All hosts that have been benned are saved in the file `sudo vim /etc/hosts.deny`
 
 1. Change file
 
-		sudo vim /etc/default/portsentry
+	sudo vim /etc/default/portsentry
 
-		 TCP_MODE="atcp"
-		 UDP_MODE="audp"
+		TCP_MODE="atcp"
+		UDP_MODE="audp"
 
 2. Change file
 
 	sudo vim /etc/portsentry/portsentry.conf
 
 		# only one KILL shall be uncommented
+
 		BLOCK_UDP="1"
 		BLOCK_TCP="1"
 		KILL_ROUTE="/sbin/iptables -I INPUT -s $TARGET$ -j DROP"
@@ -189,7 +193,9 @@ after running scan.py
 # Stop the services you don’t need for this project.
 
 	# Check running services
+
 	sudo ls /etc/init.d
+
 	# or sudo service --status-all
 
 	sudo systemctl disable console-setup.service
@@ -202,7 +208,7 @@ after running scan.py
 
 ### VI.1 Web Part
 
-Create a Self-Signed SSL Certificate using Apache in Debian
+Create a Self-Signed SSL Certificate using Apache in Debian.
 
 #Copy
 
@@ -217,17 +223,17 @@ Create a Self-Signed SSL Certificate using Apache in Debian
 
 	sudo vim /etc/apache2/conf-available/ssl-params.conf
 
-SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
-SSLProtocol All -SSLv2 -SSLv3
-SSLHonorCipherOrder On
+		SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+		SSLProtocol All -SSLv2 -SSLv3
+		SSLHonorCipherOrder On
 
-Header always set X-Frame-Options DENY
-Header always set X-Content-Type-Options nosniff
+		Header always set X-Frame-Options DENY
+		Header always set X-Content-Type-Options nosniff
 
-SSLCompression off
-SSLSessionTickets Off
-SSLUseStapling on
-SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
+		SSLCompression off
+		SSLSessionTickets Off
+		SSLUseStapling on
+		SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 
 
 #MAKE BACKUP
@@ -238,7 +244,6 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 
 	sudo vim /etc/apache2/sites-available/default-ssl.conf
 
-##################################################################################
 		ServerAdmin root@roger
 		ServerName 10.11.200.233
 		DocumentRoot /var/www/html
@@ -247,13 +252,12 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 		SSLEngine on
 		SSLCertificateFile	#uncomment
 		SSLCertificateKeyFile #uncomment
-##################################################################################
 
 # EDITFILE
 
 	sudo vim /etc/apache2/apache2.conf
 
-ServerName 10.11.200.233
+		ServerName 10.11.200.233
 
 # CHECK AND RESTART
 
