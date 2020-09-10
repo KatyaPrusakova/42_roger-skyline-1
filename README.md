@@ -6,9 +6,11 @@ Initiation project to system and network administration.
 </h1>
 
 ---
+
 <h1 align="center">
 V.1 VM Part
 </h1>
+
 ---
 
 For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netinst.
@@ -28,6 +30,7 @@ For this project I used VirtualBox in order to install Debian 10.5.0 amd64 netin
 * Command to check disk space and partion:
 
 	`df -h`
+
 **Command to add new user**
 
 My new user will be called `new_eprusako`
@@ -74,9 +77,7 @@ File `sudoers` should look like this:
 
 `sudo systemctl restart networking` or `sudo service networking restart`
 
----
 **Setting up the SSH connection**
----
 
 Comand to check status: `sudo systemctl status ssh`
 
@@ -120,9 +121,8 @@ The key has been added to VM so now its possible to log in.
 
 If you try to connect with different user it should show `Permission denied (publickey).` error. To see more details connect with `ssh -v`
 
----
 **FIREWALL AND DOS PROTECTION**
----
+
 	echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 	echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 
@@ -174,7 +174,7 @@ If you want to delete run `sudo apt-get autoremove --purge fail2ban`
 
 If you want to check ssh banned informtion run `journalctl -u ssh.service` and to checl all log info run  `ls -l /var/log/*.log`
 
-# Port scanning
+**Port scanning**
 
 If you want to test you port scanning run `scan.py` file from this repository. All hosts that have been benned are saved in the file `sudo vim /etc/hosts.deny`
 
@@ -245,6 +245,7 @@ Disable command:
 <h1 align="center">
 VI.1 Web Part
 </h1>
+
 ---
 
 Create a Self-Signed SSL Certificate using Apache in Debian.
@@ -322,6 +323,7 @@ Redirect "/" "https://10.11.200.233/"
 <h1 align="center">
 VI.2 Deployment Part
 </h1>
+
 ---
 
 **Deployment installation**
